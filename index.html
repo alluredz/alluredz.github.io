@@ -2,15 +2,184 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>question</title>
+    <title>新年快乐</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-size: 3em;
+				color: red;
+				opacity: 1;
+				transition: opacity 2s ease-out;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+		    .hidden {
+        opacity: 0;
+    }
+    </style>
 </head>
 <body>
-    <h1>question</h1>
-    
-    <ul>
-        <li><a href="https://www.cnblogs.com/HDDDDDD/p/15067619.html" target="_blank">万向锁</a></li>
-	<li><a href="" target="_blank">外部flash烧录算法</a></li>
-    </ul>
-</body>
 
+<div class="popup" id="popup">新年快乐</div>
+
+<script>
+    // 等待3秒后开始淡出效果
+    setTimeout(function() {
+        document.getElementById('popup').classList.add('hidden');
+    }, 3000);
+
+    // 完全隐藏元素
+    setTimeout(function() {
+        document.getElementById('popup').style.display = 'none';
+    }, 5000); // 淡出效果持续2秒，总共5秒后完全隐藏
+</script>
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 设置canvas尺寸为窗口大小
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // 烟花参数
+    const fireworks = [];
+    const particles = [];
+    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            this.radius = Math.random() * 2 + 1;
+            this.alpha = 1;
+            this.velocity = {
+                x: (Math.random() - 0.5) * 5,
+                y: (Math.random() - 0.5) * 5
+            };
+            this.gravity = 0.05;
+        }
+
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        update() {
+            this.velocity.y += this.gravity;
+            this.x += this.velocity.x;
+            this.y += this.velocity.y;
+            this.alpha -= 0.01;
+            this.draw();
+        }
+    }
+
+    class Firework {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.targetY = y - Math.random() * 200 - 100;
+            this.speed = 10;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.exploded = false;
+        }
+
+        update() {
+            if (!this.exploded) {
+                this.y -= this.speed;
+
+                if (this.y <= this.targetY) {
+                    this.explode();
+                }
+            }
+        }
+
+        explode() {
+            this.exploded = true;
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle(this.x, this.y, this.color));
+            }
+        }
+
+        draw() {
+            if (!this.exploded) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+    }
+
+    // 动画循环
+    function animate() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 添加新的烟花
+        if (Math.random() < 0.03) {
+            fireworks.push(new Firework(
+                Math.random() * canvas.width,
+                canvas.height
+            ));
+        }
+
+        // 更新烟花
+        fireworks.forEach((firework, index) => {
+            firework.update();
+            firework.draw();
+            if (firework.exploded) {
+                fireworks.splice(index, 1);
+            }
+        });
+
+        // 更新粒子
+        particles.forEach((particle, index) => {
+            if (particle.alpha <= 0) {
+                particles.splice(index, 1);
+            } else {
+                particle.update();
+            }
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    // 点击触发烟花
+    canvas.addEventListener('click', (e) => {
+        fireworks.push(new Firework(e.clientX, e.clientY));
+    });
+
+    animate();
+</script>
+
+</body>
 </html>
