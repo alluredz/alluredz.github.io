@@ -2,184 +2,167 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>新年快乐</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源列表 | 学习资料</title>
     <style>
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            height: 100%;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
-        .popup {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				font-size: 3em;
-				color: red;
-				opacity: 1;
-				transition: opacity 2s ease-out;
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
         }
-        canvas {
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            border-radius: 2px;
         }
-		    .hidden {
-        opacity: 0;
-    }
+        
+        .description {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 20px auto 0;
+            line-height: 1.6;
+        }
+        
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .card-link:hover {
+            color: #2980b9;
+        }
+        
+        .card-link::after {
+            content: '→';
+            margin-left: 8px;
+            transition: transform 0.2s ease;
+        }
+        
+        .card-link:hover::after {
+            transform: translateX(4px);
+        }
+        
+        .card-description {
+            color: #7f8c8d;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .card-content {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-
-<div class="popup" id="popup">新年快乐</div>
-
-<script>
-    // 等待3秒后开始淡出效果
-    setTimeout(function() {
-        document.getElementById('popup').classList.add('hidden');
-    }, 3000);
-
-    // 完全隐藏元素
-    setTimeout(function() {
-        document.getElementById('popup').style.display = 'none';
-    }, 5000); // 淡出效果持续2秒，总共5秒后完全隐藏
-</script>
-<canvas id="canvas"></canvas>
-
-<script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-
-    // 设置canvas尺寸为窗口大小
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // 烟花参数
-    const fireworks = [];
-    const particles = [];
-    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
-
-    class Particle {
-        constructor(x, y, color) {
-            this.x = x;
-            this.y = y;
-            this.color = color;
-            this.radius = Math.random() * 2 + 1;
-            this.alpha = 1;
-            this.velocity = {
-                x: (Math.random() - 0.5) * 5,
-                y: (Math.random() - 0.5) * 5
-            };
-            this.gravity = 0.05;
-        }
-
-        draw() {
-            ctx.save();
-            ctx.globalAlpha = this.alpha;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            ctx.fill();
-            ctx.restore();
-        }
-
-        update() {
-            this.velocity.y += this.gravity;
-            this.x += this.velocity.x;
-            this.y += this.velocity.y;
-            this.alpha -= 0.01;
-            this.draw();
-        }
-    }
-
-    class Firework {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.targetY = y - Math.random() * 200 - 100;
-            this.speed = 10;
-            this.color = colors[Math.floor(Math.random() * colors.length)];
-            this.exploded = false;
-        }
-
-        update() {
-            if (!this.exploded) {
-                this.y -= this.speed;
-
-                if (this.y <= this.targetY) {
-                    this.explode();
-                }
-            }
-        }
-
-        explode() {
-            this.exploded = true;
-            for (let i = 0; i < 50; i++) {
-                particles.push(new Particle(this.x, this.y, this.color));
-            }
-        }
-
-        draw() {
-            if (!this.exploded) {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
-        }
-    }
-
-    // 动画循环
-    function animate() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // 添加新的烟花
-        if (Math.random() < 0.03) {
-            fireworks.push(new Firework(
-                Math.random() * canvas.width,
-                canvas.height
-            ));
-        }
-
-        // 更新烟花
-        fireworks.forEach((firework, index) => {
-            firework.update();
-            firework.draw();
-            if (firework.exploded) {
-                fireworks.splice(index, 1);
-            }
-        });
-
-        // 更新粒子
-        particles.forEach((particle, index) => {
-            if (particle.alpha <= 0) {
-                particles.splice(index, 1);
-            } else {
-                particle.update();
-            }
-        });
-
-        requestAnimationFrame(animate);
-    }
-
-    // 点击触发烟花
-    canvas.addEventListener('click', (e) => {
-        fireworks.push(new Firework(e.clientX, e.clientY));
-    });
-
-    animate();
-</script>
-
+    <div class="container">
+        <header>
+            <h1>资源列表</h1>
+            <p class="description">精选学习资料与文章，助您提升技能与知识水平</p>
+        </header>
+        
+        <div class="list-container">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">万向锁</h2>
+                    <a href="https://www.cnblogs.com/HDDDDDD/p/15067619.html" target="_blank" class="card-link">阅读文章</a>
+                    <p class="card-description">深入解析万向锁的概念、产生原因及其在3D旋转中的应用和解决方案。</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">学习资料</h2>
+                    <a href="https://pan.quark.cn/s/5c82fb1cba1a#/list/share" target="_blank" class="card-link">访问资源</a>
+                    <p class="card-description">精选学习资料合集，涵盖多个领域，助您系统性地提升专业技能。</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 资源列表 | 持续更新中</p>
+        </footer>
+    </div>
 </body>
 </html>
