@@ -3,82 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐔了，孩子</title>
+    <title>问题列表 | 学习资料</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
         
         body {
-            background-color: white;
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #333;
         }
         
         .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
             text-align: center;
-            animation: fadeIn 1.5s ease-in-out;
+            margin-bottom: 40px;
+            padding: 20px;
         }
         
-        .text {
-            color: #ff0000;
-            font-size: 4rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            border-radius: 2px;
         }
         
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .description {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 20px auto 0;
+            line-height: 1.6;
         }
         
-        .subtitle {
-            color: #ff3333;
-            font-size: 1.5rem;
-            margin-top: 10px;
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .text {
-                font-size: 3rem;
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .card-link:hover {
+            color: #2980b9;
+        }
+        
+        .card-link::after {
+            content: '→';
+            margin-left: 8px;
+            transition: transform 0.2s ease;
+        }
+        
+        .card-link:hover::after {
+            transform: translateX(4px);
+        }
+        
+        .card-description {
+            color: #7f8c8d;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
             }
             
-            .subtitle {
-                font-size: 1.2rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .text {
-                font-size: 2.5rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
+            .card-content {
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="text">🐔了，孩子</div>
-        <div class="subtitle">睡觉吧，别挣扎了</div>
+        <header>
+            <h1>资源列表</h1>
+            <p class="description">精选学习资料与文章，助您提升技能与知识水平</p>
+        </header>
+        
+        <div class="list-container">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">万向锁</h2>
+                    <a href="https://www.cnblogs.com/HDDDDDD/p/15067619.html" target="_blank" class="card-link">阅读文章</a>
+                    <p class="card-description">深入解析万向锁的概念、产生原因及其在3D旋转中的应用和解决方案。</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">学习资料</h2>
+                    <a href="https://pan.quark.cn/s/5c82fb1cba1a#/list/share" target="_blank" class="card-link">访问资源</a>
+                    <p class="card-description">精选学习资料合集，涵盖多个领域，助您系统性地提升专业技能。</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 资源列表 | 持续更新中</p>
+        </footer>
     </div>
 </body>
 </html>
-
-
